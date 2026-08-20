@@ -40,3 +40,14 @@ def test_batch_100_images(tmp_path: Path) -> None:
     elapsed = time.perf_counter() - start
     # 100 images doivent être traitées en un temps raisonnable (< 60s).
     assert elapsed < 60.0, f"Lot de 100 images trop lent : {elapsed:.2f}s"
+
+
+def test_startup_under_3s() -> None:
+    """Vérifie que l'import de l'application (proxy du démarrage) est < 3s."""
+    start = time.perf_counter()
+    import app.main  # noqa: F401
+    import app.ui.main_window  # noqa: F401
+    import app.ui.theme.theme  # noqa: F401
+
+    elapsed = time.perf_counter() - start
+    assert elapsed < 3.0, f"Démarrage trop lent : {elapsed:.2f}s"

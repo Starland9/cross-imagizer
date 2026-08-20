@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 from PIL import Image
@@ -16,12 +17,17 @@ from app.core.errors import (
 from models import ConversionOptions, ImageSource
 
 
-def convert(source: Path, options: ConversionOptions) -> Path:
+def convert(
+    source: Path,
+    options: ConversionOptions,
+    confirm: Callable[[Path], bool] | None = None,
+) -> Path:
     """Convertit une image source vers le format cible.
 
     Args:
         source: Chemin du fichier source.
         options: Options de conversion.
+        confirm: Callback de confirmation pour la politique de collision ``ASK``.
 
     Returns:
         Le chemin du fichier de sortie produit.
@@ -38,7 +44,7 @@ def convert(source: Path, options: ConversionOptions) -> Path:
         raise UnreadableImageError(f"Fichier source introuvable : {source}")
 
     output_path = collision.resolve_output_path(
-        source, target_format, None, options.collision_policy
+        source, target_format, None, options.collision_policy, confirm
     )
 
     # Gestion des images animées.

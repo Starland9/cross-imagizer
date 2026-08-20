@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 from PySide6.QtCore import QObject, QThreadPool, Signal
@@ -42,9 +43,14 @@ class BatchService(QObject):
         ]
         return Batch(id="batch", tasks=tasks)
 
-    def run(self, batch: Batch, options: ConversionOptions) -> None:
+    def run(
+        self,
+        batch: Batch,
+        options: ConversionOptions,
+        confirm: Callable[[Path], bool] | None = None,
+    ) -> None:
         """Lance l'exécution d'un lot en arrière-plan."""
-        self._worker = BatchWorker(batch, options)
+        self._worker = BatchWorker(batch, options, confirm=confirm)
         self._worker.signals.progress.connect(self.progress)
         self._worker.signals.task_finished.connect(self.task_finished)
         self._worker.signals.finished.connect(self.finished)

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import threading
 from pathlib import Path
 
+from PySide6.QtCore import Q_ARG, QMetaObject, Qt, Slot
 from PySide6.QtWidgets import (
     QFileDialog,
     QHBoxLayout,
@@ -15,6 +17,8 @@ from PySide6.QtWidgets import (
 )
 
 from app.services import batch_service
+from app.ui import animations
+from app.ui.resources import icons
 from app.ui.widgets.batch_panel import BatchPanel
 from app.ui.widgets.drop_zone import DropZone
 from app.ui.widgets.options_panel import OptionsPanel
@@ -30,6 +34,9 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Cross-Imagizer")
         self.resize(900, 640)
+
+        self._confirm_event = threading.Event()
+        self._confirm_answer = False
 
         self._batch_service = batch_service.BatchService()
         self._batch_service.progress.connect(self._on_progress)
@@ -63,11 +70,13 @@ class MainWindow(QMainWindow):
         # Boutons
         buttons = QHBoxLayout()
         self._add_btn = QPushButton("Ajouter des images")
+        self._add_btn.setIcon(icons.add_icon())
         self._add_btn.clicked.connect(self._pick_files)
         buttons.addWidget(self._add_btn)
 
         self._convert_btn = QPushButton("Convertir")
         self._convert_btn.setObjectName("secondary")
+        self._convert_btn.setIcon(icons.convert_icon())
         self._convert_btn.clicked.connect(self._convert)
         buttons.addWidget(self._convert_btn)
 
@@ -79,11 +88,15 @@ class MainWindow(QMainWindow):
 
         self._theme_btn = QPushButton("Thème sombre")
         self._theme_btn.setObjectName("secondary")
+        self._theme_btn.setIcon(icons.theme_icon())
         self._theme_btn.clicked.connect(self._toggle_theme)
         buttons.addWidget(self._theme_btn)
         root.addLayout(buttons)
 
         self._dark = False
+
+        # Animation d'apparition de la fenêtre.
+        animations.fade_in(self)
 
     def _pick_files(self) -> None:
         paths, _ = QFileDialog.getOpenFileNames(self, "Sélectionner des images")
@@ -102,9 +115,36 @@ class MainWindow(QMainWindow):
             return
         options = self._options.options()
         batch = self._batch_service.create_batch(files, options)
-        self._batch_service.run(batch, options)
+        self._batch_service.run(batch, options, confirm=self._confirm_overwrite)
         self._convert_btn.setEnabled(False)
         self._cancel_btn.setEnabled(True)
+
+    @Slot(Path, result=bool)
+    def _confirm_overwrite(self, candidate: Path) -> bool:
+        """Demande confirmation d'écrasement (appelé depuis le thread worker)."""
+        self._confirm_event.clear()
+        self._confirm_answer = False
+        # Marshal vers le thread UI de manière bloquante.
+        QMetaObject.invokeMethod(
+            self,
+            "_show_overwrite_dialog",
+            Qt.ConnectionType.BlockingQueuedConnection,
+            Q_ARG(str, str(candidate)),
+        )
+        self._confirm_event.wait()
+        return self._confirm_answer
+
+    @Slot(str)
+    def _show_overwrite_dialog(self, candidate: str) -> None:
+        """Affiche le dialogue de confirmation d'écrasement (thread UI)."""
+        answer = QMessageBox.question(
+            self,
+            "Fichier existant",
+            f"Le fichier {candidate} existe déjà.\nVoulez-vous l'écraser ?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+        )
+        self._confirm_answer = answer == QMessageBox.StandardButton.Yes
+        self._confirm_event.set()
 
     def _cancel(self) -> None:
         self._batch_service.cancel()

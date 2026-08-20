@@ -275,3 +275,16 @@ With multiple developers:
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
+
+---
+
+## Phase 9: Convergence
+
+**Purpose**: Combler les écarts entre la spec/plan/tasks et l'implémentation actuelle.
+
+- [X] T057 Implémenter l'intégration réelle au menu contextuel système (Windows/macOS/Linux) et câbler `register_context_menu()` au démarrage dans `src/app/main.py` per FR-014 / US5-AC2 (partial)
+- [X] T058 Créer les icônes et assets dans `src/app/ui/resources/` et les utiliser via `QIcon` per FR-016 (partial)
+- [X] T059 Implémenter la confirmation réelle pour `CollisionPolicy.ASK` (dialogue utilisateur) dans `src/app/core/collision.py` et l'UI per FR-010 (partial)
+- [X] T060 Câbler les animations `fade_in()` dans l'interface (aperçu, panneaux) per FR-016 (partial)
+- [X] T061 Ajouter un benchmark de démarrage (<3s) dans `tests/benchmark/test_performance.py` per SC-004 (partial)
+- [X] T062 Supprimer ou utiliser `load_source()` inutilisé dans `src/app/core/converter.py` (unrequested)
