@@ -12,6 +12,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QPushButton,
+    QSplitter,
     QVBoxLayout,
     QWidget,
 )
@@ -26,7 +27,7 @@ from app.ui.widgets.history_panel import HistoryPanel
 from app.ui.widgets.options_panel import OptionsPanel
 from app.ui.widgets.preview_pane import PreviewPane
 from models import BatchReport
-from platform_utils import notifications
+from platform_utils import notifications, open_folder
 
 
 class MainWindow(QMainWindow):
@@ -87,20 +88,24 @@ class MainWindow(QMainWindow):
         self._drop_zone.files_dropped.connect(self._on_files_dropped)
         root.addWidget(self._drop_zone)
 
-        # Corps : aperçu + options + batch
-        body = QHBoxLayout()
+        # Corps : aperçu + options + batch + historique, équilibrés via QSplitter.
         self._preview = PreviewPane()
-        body.addWidget(self._preview, 1)
-
         self._options = OptionsPanel()
-        body.addWidget(self._options, 1)
-
         self._batch_panel = BatchPanel()
-        body.addWidget(self._batch_panel, 1)
-
         self._history_panel = HistoryPanel()
-        body.addWidget(self._history_panel, 1)
-        root.addLayout(body)
+
+        self._splitter = QSplitter(Qt.Orientation.Horizontal)
+        self._splitter.addWidget(self._preview)
+        self._splitter.addWidget(self._options)
+        self._splitter.addWidget(self._batch_panel)
+        self._splitter.addWidget(self._history_panel)
+        # Proportions initiales équilibrées (aperçu plus large, les autres égaux).
+        self._splitter.setStretchFactor(0, 3)
+        self._splitter.setStretchFactor(1, 2)
+        self._splitter.setStretchFactor(2, 2)
+        self._splitter.setStretchFactor(3, 2)
+        self._splitter.setSizes([300, 200, 200, 200])
+        root.addWidget(self._splitter)
 
         # Boutons
         buttons = QHBoxLayout()
@@ -131,6 +136,12 @@ class MainWindow(QMainWindow):
         self._output_btn.setObjectName("secondary")
         self._output_btn.clicked.connect(self._pick_output_dir)
         buttons.addWidget(self._output_btn)
+
+        self._open_folder_btn = QPushButton("Ouvrir le dossier")
+        self._open_folder_btn.setObjectName("secondary")
+        self._open_folder_btn.clicked.connect(self._open_output_folder)
+        self._open_folder_btn.setEnabled(False)
+        buttons.addWidget(self._open_folder_btn)
         root.addLayout(buttons)
 
         self._dark = False
@@ -149,6 +160,19 @@ class MainWindow(QMainWindow):
             self._output_dir = Path(directory)
         except ValueError as exc:
             QMessageBox.warning(self, "Dossier invalide", str(exc))
+
+    def _open_output_folder(self) -> None:
+        """Ouvre le dossier de sortie courant dans le gestionnaire de fichiers."""
+        target = self._output_dir
+        if target is None:
+            # Dossier par défaut : à côté de la première source de la file.
+            files = self._batch_panel.files()
+            target = files[0].parent if files else None
+        if target is None:
+            QMessageBox.information(self, "Aucun dossier", "Aucun dossier de sortie défini.")
+            return
+        if not open_folder.open_folder(target):
+            QMessageBox.warning(self, "Ouverture impossible", f"Impossible d'ouvrir : {target}")
 
     def _pick_files(self) -> None:
         paths, _ = QFileDialog.getOpenFileNames(self, "Sélectionner des images")
@@ -210,6 +234,8 @@ class MainWindow(QMainWindow):
         self._convert_btn.setEnabled(True)
         self._cancel_btn.setEnabled(False)
         self._history_panel.refresh()
+        if report.succeeded > 0:
+            self._open_folder_btn.setEnabled(True)
         notifications.notify(
             "Conversion terminée",
             f"{report.succeeded} réussie(s), {report.failed} échec(s)",

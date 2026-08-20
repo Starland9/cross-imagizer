@@ -24,7 +24,7 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create `open_folder.py` skeleton in `src/platform_utils/open_folder.py`
+- [X] T001 Create `open_folder.py` skeleton in `src/platform_utils/open_folder.py`
 
 ---
 
@@ -34,8 +34,8 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 [P] Unit tests for `open_folder` in `tests/unit/test_open_folder.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T003 Implement `open_folder` (QDesktopServices) in `src/platform_utils/open_folder.py`
+- [X] T002 [P] Unit tests for `open_folder` in `tests/unit/test_open_folder.py` (TDD: write FIRST, ensure FAIL)
+- [X] T003 Implement `open_folder` (QDesktopServices) in `src/platform_utils/open_folder.py`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -49,12 +49,12 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T004 [P] [US1] Widget test for balanced layout in `tests/unit/test_layout.py`
+- [X] T004 [P] [US1] Widget test for balanced layout in `tests/unit/test_layout.py`
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Refactor main window layout with QSplitter and stretch factors in `src/app/ui/main_window.py`
-- [ ] T006 [US1] Adjust QSS spacing and proportions in `src/app/ui/theme/theme.py`
+- [X] T005 [US1] Refactor main window layout with QSplitter and stretch factors in `src/app/ui/main_window.py`
+- [X] T006 [US1] Adjust QSS spacing and proportions in `src/app/ui/theme/theme.py`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -68,12 +68,12 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T007 [P] [US2] Integration test for open folder after conversion in `tests/integration/test_open_folder.py`
+- [X] T007 [P] [US2] Integration test for open folder after conversion in `tests/integration/test_open_folder.py`
 
 ### Implementation for User Story 2
 
-- [ ] T008 [US2] Add « Ouvrir le dossier de sortie » button in `src/app/ui/main_window.py`
-- [ ] T009 [US2] Wire button to `open_folder` with current output directory in `src/app/ui/main_window.py`
+- [X] T008 [US2] Add « Ouvrir le dossier de sortie » button in `src/app/ui/main_window.py`
+- [X] T009 [US2] Wire button to `open_folder` with current output directory in `src/app/ui/main_window.py`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -87,12 +87,12 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T010 [P] [US3] Widget test for visual feedback states in `tests/unit/test_feedback.py`
+- [X] T010 [P] [US3] Widget test for visual feedback states in `tests/unit/test_feedback.py`
 
 ### Implementation for User Story 3
 
-- [ ] T011 [US3] Ensure convert button disabled during conversion in `src/app/ui/main_window.py`
-- [ ] T012 [US3] Ensure success/error feedback after conversion in `src/app/ui/main_window.py`
+- [X] T011 [US3] Ensure convert button disabled during conversion in `src/app/ui/main_window.py`
+- [X] T012 [US3] Ensure success/error feedback after conversion in `src/app/ui/main_window.py`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -102,10 +102,10 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T013 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
-- [ ] T014 Run quickstart.md validation scenarios end-to-end
-- [ ] T015 Code cleanup and refactoring (ruff, mypy clean)
-- [ ] T016 [P] Add UI non-blocking test during conversion in `tests/unit/test_feedback.py` per SC-004
+- [X] T013 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
+- [X] T014 Run quickstart.md validation scenarios end-to-end
+- [X] T015 Code cleanup and refactoring (ruff, mypy clean)
+- [X] T016 [P] Add UI non-blocking test during conversion in `tests/unit/test_feedback.py` per SC-004
 
 ---
 
