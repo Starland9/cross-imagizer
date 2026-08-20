@@ -8,7 +8,6 @@ from pathlib import Path
 from PySide6.QtCore import Q_ARG, QMetaObject, Qt, Slot
 from PySide6.QtWidgets import (
     QFileDialog,
-    QHBoxLayout,
     QMainWindow,
     QMessageBox,
     QPushButton,
@@ -19,14 +18,15 @@ from PySide6.QtWidgets import (
 
 from app.services import batch_service, settings_service
 from app.ui import animations
-from app.ui.resources import icons
 from app.ui.theme import tokens
+from app.ui.theme.theme import apply_theme
 from app.ui.tray import TrayIcon
-from app.ui.widgets.batch_panel import BatchPanel
+from app.ui.widgets.action_bar import ActionBar
+from app.ui.widgets.app_header import AppHeader
 from app.ui.widgets.drop_zone import DropZone
-from app.ui.widgets.history_panel import HistoryPanel
 from app.ui.widgets.options_panel import OptionsPanel
 from app.ui.widgets.preview_pane import PreviewPane
+from app.ui.widgets.side_tabs import SideTabs
 from models import BatchReport
 from platform_utils import notifications, open_folder
 
@@ -37,7 +37,8 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("Cross-Imagizer")
-        self.resize(900, 640)
+        self.resize(1024, 700)
+        self.setMinimumSize(800, 500)
 
         self._confirm_event = threading.Event()
         self._confirm_answer = False
@@ -50,6 +51,7 @@ class MainWindow(QMainWindow):
         self._batch_service.cancelled.connect(self._on_cancelled)
 
         self._build_ui()
+        self._apply_initial_theme()
 
     def enable_tray(self, tray: TrayIcon) -> None:
         """Active le comportement de barre de tâche."""
@@ -91,79 +93,88 @@ class MainWindow(QMainWindow):
             tokens.SPACING_MEDIUM,
         )
 
-        # Zone de dépôt
-        self._drop_zone = DropZone()
-        self._drop_zone.files_dropped.connect(self._on_files_dropped)
+        self._header = self._build_header()
+        root.addWidget(self._header)
+
+        self._drop_zone = self._build_drop_zone()
         root.addWidget(self._drop_zone)
 
-        # Corps : aperçu + options + batch + historique, équilibrés via QSplitter.
-        self._preview = PreviewPane()
-        self._options = OptionsPanel()
-        self._batch_panel = BatchPanel()
-        self._history_panel = HistoryPanel()
+        self._workbench = self._build_workbench()
+        root.addWidget(self._workbench, stretch=1)
 
-        self._splitter = QSplitter(Qt.Orientation.Horizontal)
-        self._splitter.addWidget(self._preview)
-        self._splitter.addWidget(self._options)
-        self._splitter.addWidget(self._batch_panel)
-        self._splitter.addWidget(self._history_panel)
-        # Proportions initiales équilibrées (aperçu plus large, les autres égaux).
-        self._splitter.setStretchFactor(0, 3)
-        self._splitter.setStretchFactor(1, 2)
-        self._splitter.setStretchFactor(2, 2)
-        self._splitter.setStretchFactor(3, 2)
-        self._splitter.setSizes([300, 200, 200, 200])
-        # Bornes des panneaux (FR-001/SC-001).
-        for panel in (self._preview, self._options, self._batch_panel, self._history_panel):
-            panel.setMinimumWidth(tokens.PANEL_MIN_WIDTH)
-            panel.setMaximumWidth(tokens.PANEL_MAX_WIDTH)
-        root.addWidget(self._splitter)
-
-        # Boutons — alignés et espacés uniformément.
-        buttons = QHBoxLayout()
-        buttons.setSpacing(tokens.SPACING_MEDIUM)
-        margins = (tokens.SPACING_SMALL,) * 4
-        buttons.setContentsMargins(*margins)
-        self._add_btn = QPushButton("Ajouter des images")
-        self._add_btn.setIcon(icons.add_icon())
-        self._add_btn.clicked.connect(self._pick_files)
-        buttons.addWidget(self._add_btn)
-
-        self._convert_btn = QPushButton("Convertir")
-        self._convert_btn.setObjectName("secondary")
-        self._convert_btn.setIcon(icons.convert_icon())
-        self._convert_btn.clicked.connect(self._convert)
-        buttons.addWidget(self._convert_btn)
-
-        self._cancel_btn = QPushButton("Annuler")
-        self._cancel_btn.setObjectName("secondary")
-        self._cancel_btn.clicked.connect(self._cancel)
-        self._cancel_btn.setEnabled(False)
-        buttons.addWidget(self._cancel_btn)
-
-        self._theme_btn = QPushButton("Thème sombre")
-        self._theme_btn.setObjectName("secondary")
-        self._theme_btn.setIcon(icons.theme_icon())
-        self._theme_btn.clicked.connect(self._toggle_theme)
-        buttons.addWidget(self._theme_btn)
-
-        self._output_btn = QPushButton("Dossier de sortie…")
-        self._output_btn.setObjectName("secondary")
-        self._output_btn.clicked.connect(self._pick_output_dir)
-        buttons.addWidget(self._output_btn)
-
-        self._open_folder_btn = QPushButton("Ouvrir le dossier")
-        self._open_folder_btn.setObjectName("secondary")
-        self._open_folder_btn.clicked.connect(self._open_output_folder)
-        self._open_folder_btn.setEnabled(False)
-        buttons.addWidget(self._open_folder_btn)
-        root.addLayout(buttons)
+        self._action_bar = self._build_action_bar()
+        root.addWidget(self._action_bar)
 
         self._dark = False
         self._output_dir: Path | None = settings_service.get_output_directory()
 
         # Animation d'apparition de la fenêtre.
         animations.fade_in(self)
+
+    def _build_header(self) -> AppHeader:
+        """Construit l'en-tête de l'application."""
+        header = AppHeader()
+        header.setObjectName("appHeader")
+        return header
+
+    def _build_drop_zone(self) -> DropZone:
+        """Construit la zone de dépôt compacte."""
+        zone = DropZone()
+        zone.setObjectName("dropZone")
+        zone.files_dropped.connect(self._on_files_dropped)
+        zone.clicked.connect(self._pick_files)
+        return zone
+
+    def _build_workbench(self) -> QSplitter:
+        """Construit le corps : options | aperçu | onglets file/historique."""
+        self._preview = PreviewPane()
+        self._options = OptionsPanel()
+        self._side_tabs = SideTabs()
+        self._batch_panel = self._side_tabs.batch_panel
+        self._history_panel = self._side_tabs.history_panel
+
+        splitter = QSplitter(Qt.Orientation.Horizontal)
+        splitter.addWidget(self._options)
+        splitter.addWidget(self._preview)
+        splitter.addWidget(self._side_tabs)
+        splitter.setStretchFactor(0, 0)
+        splitter.setStretchFactor(1, 3)
+        splitter.setStretchFactor(2, 1)
+        splitter.setSizes([260, 400, 300])
+        return splitter
+
+    def _build_action_bar(self) -> ActionBar:
+        """Construit la barre d'actions hiérarchisée."""
+        action_bar = ActionBar()
+        action_bar.setObjectName("actionBar")
+        action_bar.add_button.clicked.connect(self._pick_files)
+        action_bar.convert_button.clicked.connect(self._convert)
+        action_bar.cancel_button.clicked.connect(self._cancel)
+        action_bar.theme_button.clicked.connect(self._toggle_theme)
+        action_bar.output_button.clicked.connect(self._pick_output_dir)
+        action_bar.open_folder_button.clicked.connect(self._open_output_folder)
+
+        # Raccourcis internes vers les anciens noms pour compatibilité.
+        self._add_btn: QPushButton = action_bar.add_button
+        self._convert_btn: QPushButton = action_bar.convert_button
+        self._cancel_btn: QPushButton = action_bar.cancel_button
+        self._theme_btn: QPushButton = action_bar.theme_button
+        self._output_btn: QPushButton = action_bar.output_button
+        self._open_folder_btn: QPushButton = action_bar.open_folder_button
+        return action_bar
+
+    def _apply_initial_theme(self) -> None:
+        """Applique le thème clair par défaut et les styles des nouveaux widgets."""
+        from PySide6.QtWidgets import QApplication
+
+        app = QApplication.instance()
+        if isinstance(app, QApplication):
+            apply_theme(app, False)
+        self._header.apply_theme(False)
+        self._drop_zone.apply_theme(False)
+        self._action_bar.apply_theme(False)
+        self._batch_panel.apply_theme(False)
+        self._history_panel.apply_theme(False)
 
     def _pick_output_dir(self) -> None:
         """Ouvre un sélecteur de dossier de sortie et le persiste."""
@@ -197,6 +208,7 @@ class MainWindow(QMainWindow):
     def _on_files_dropped(self, paths: list[Path]) -> None:
         self._batch_panel.add_files(paths)
         if paths:
+            self._drop_zone.show_preview(paths[0])
             self._preview.show_image(paths[0])
 
     def _convert(self) -> None:
@@ -270,9 +282,22 @@ class MainWindow(QMainWindow):
         self._dark = not self._dark
         from PySide6.QtWidgets import QApplication
 
-        from app.ui.theme.theme import apply_theme
-
         app = QApplication.instance()
         if isinstance(app, QApplication):
             apply_theme(app, self._dark)
         self._theme_btn.setText("Thème clair" if self._dark else "Thème sombre")
+        self._header.apply_theme(self._dark)
+        self._drop_zone.apply_theme(self._dark)
+        self._action_bar.apply_theme(self._dark)
+        self._batch_panel.apply_theme(self._dark)
+        self._history_panel.apply_theme(self._dark)
+        theme_widgets = (
+            self._header,
+            self._drop_zone,
+            self._action_bar,
+            self._batch_panel,
+            self._history_panel,
+        )
+        for widget in theme_widgets:
+            widget.style().unpolish(widget)
+            widget.style().polish(widget)

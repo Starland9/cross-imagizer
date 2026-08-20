@@ -10,25 +10,19 @@ from app.ui.theme import tokens
 pytest.importorskip("PySide6")
 
 
-def test_panels_have_min_max_width(qtbot) -> None:  # type: ignore[no-untyped-def]
+def test_options_panel_width(qtbot) -> None:  # type: ignore[no-untyped-def]
     window = MainWindow()
     qtbot.addWidget(window)
-    for panel in (
-        window._preview,
-        window._options,
-        window._batch_panel,
-        window._history_panel,
-    ):
-        assert panel.minimumWidth() >= tokens.PANEL_MIN_WIDTH
-        assert panel.maximumWidth() <= tokens.PANEL_MAX_WIDTH or panel.maximumWidth() == 16777215  # noqa: PLR2004
+    options = window._options
+    assert tokens.OPTIONS_PANEL_MIN_WIDTH <= options.width() <= tokens.OPTIONS_PANEL_MAX_WIDTH
 
 
 def test_splitter_panels_bounded(qtbot) -> None:  # type: ignore[no-untyped-def]
     window = MainWindow()
     qtbot.addWidget(window)
-    # Aucun panneau ne dépasse 40 % de la largeur de la fenêtre sans justification.
+    # Aucun panneau ne dépasse 60 % de la largeur de la fenêtre sans justification.
     window_width = window.width()
-    for i in range(window._splitter.count()):
-        widget = window._splitter.widget(i)
+    for i in range(window._workbench.count()):
+        widget = window._workbench.widget(i)
         if widget.maximumWidth() != 16777215:  # noqa: PLR2004
             assert widget.maximumWidth() <= window_width * 0.6  # noqa: PLR2004

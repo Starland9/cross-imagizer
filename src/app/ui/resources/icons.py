@@ -66,6 +66,59 @@ def theme_icon() -> QIcon:
     return QIcon(_make_pixmap(_draw_theme))
 
 
+def _draw_inbox(painter: QPainter, size: int) -> None:
+    """Dessine une boîte de réception (état vide)."""
+    pen = QPen(QColor("#94a3b8"), size * 0.06)
+    painter.setPen(pen)
+    painter.setBrush(Qt.BrushStyle.NoBrush)
+    painter.drawRect(QRectF(size * 0.2, size * 0.3, size * 0.6, size * 0.45))
+    painter.drawLine(QPointF(size * 0.35, size * 0.3), QPointF(size * 0.5, size * 0.4))
+    painter.drawLine(QPointF(size * 0.5, size * 0.4), QPointF(size * 0.65, size * 0.3))
+
+
+def _draw_image(painter: QPainter, size: int) -> None:
+    """Dessine un paysage simple (image manquante)."""
+    pen = QPen(QColor("#94a3b8"), size * 0.06)
+    painter.setPen(pen)
+    painter.setBrush(Qt.BrushStyle.NoBrush)
+    rect = QRectF(size * 0.2, size * 0.25, size * 0.6, size * 0.5)
+    painter.drawRect(rect)
+    # Soleil / montagne
+    painter.setPen(Qt.PenStyle.NoPen)
+    painter.setBrush(QColor("#94a3b8"))
+    painter.drawEllipse(QPointF(size * 0.55, size * 0.4), size * 0.06, size * 0.06)
+    painter.setPen(pen)
+    painter.setBrush(Qt.BrushStyle.NoBrush)
+    painter.drawLine(QPointF(size * 0.25, size * 0.65), QPointF(size * 0.4, size * 0.5))
+    painter.drawLine(QPointF(size * 0.4, size * 0.5), QPointF(size * 0.55, size * 0.6))
+    painter.drawLine(QPointF(size * 0.55, size * 0.6), QPointF(size * 0.75, size * 0.45))
+
+
+def _draw_history(painter: QPainter, size: int) -> None:
+    """Dessine une horloge / historique."""
+    pen = QPen(QColor("#94a3b8"), size * 0.06)
+    painter.setPen(pen)
+    painter.setBrush(Qt.BrushStyle.NoBrush)
+    painter.drawEllipse(QRectF(size * 0.25, size * 0.25, size * 0.5, size * 0.5))
+    painter.drawLine(QPointF(size * 0.5, size * 0.35), QPointF(size * 0.5, size * 0.5))
+    painter.drawLine(QPointF(size * 0.5, size * 0.5), QPointF(size * 0.6, size * 0.55))
+
+
+def inbox_icon() -> QIcon:
+    """Icône d'état vide (boîte vide)."""
+    return QIcon(_make_pixmap(_draw_inbox))
+
+
+def image_icon() -> QIcon:
+    """Icône d'état vide (image)."""
+    return QIcon(_make_pixmap(_draw_image))
+
+
+def history_icon() -> QIcon:
+    """Icône d'état vide (historique)."""
+    return QIcon(_make_pixmap(_draw_history))
+
+
 def app_icon() -> QIcon:
     """Icône de l'application."""
     return convert_icon()

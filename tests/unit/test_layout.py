@@ -12,7 +12,7 @@ pytest.importorskip("PySide6")
 def test_main_window_uses_splitter(qtbot) -> None:  # type: ignore[no-untyped-def]
     window = MainWindow()
     qtbot.addWidget(window)
-    # La fenêtre doit exposer un QSplitter pour le corps (mise en page équilibrée).
-    assert window._splitter is not None
+    # La fenêtre doit exposer un QSplitter dans le workbench (mise en page équilibrée).
+    assert window._workbench is not None
     # Le splitter contient les panneaux principaux.
-    assert window._splitter.count() >= 3
+    assert window._workbench.count() >= 3

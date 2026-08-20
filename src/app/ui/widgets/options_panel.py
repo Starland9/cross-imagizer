@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 )
 
 from app.core import formats
+from app.ui.theme import tokens
 from models import CollisionPolicy, ConversionOptions
 
 
@@ -19,6 +20,9 @@ class OptionsPanel(QGroupBox):
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__("Options de conversion", parent)
+        self.setMinimumWidth(tokens.OPTIONS_PANEL_MIN_WIDTH)
+        self.setMaximumWidth(tokens.OPTIONS_PANEL_MAX_WIDTH)
+        self.setFixedWidth(tokens.OPTIONS_PANEL_WIDTH)
 
         layout = QFormLayout(self)
 
