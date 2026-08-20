@@ -1,0 +1,1 @@
+"""Couche présentation (PySide6)."""

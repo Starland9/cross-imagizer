@@ -24,12 +24,12 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per implementation plan (src/app, src/models, src/platform, tests/)
-- [ ] T002 Initialize Python project with `pyproject.toml` (dependencies: PySide6, Pillow; dev: pytest, pytest-qt, pytest-cov, ruff, mypy)
-- [ ] T003 [P] Configure linting and formatting (ruff) in `pyproject.toml`
-- [ ] T004 [P] Configure static typing (mypy) in `pyproject.toml`
-- [ ] T005 [P] Configure pytest and coverage (pytest-cov, ≥ 80 %) in `pyproject.toml`
-- [ ] T006 [P] Configure CI matrix (Windows/macOS/Linux) in `.github/workflows/ci.yml`
+- [X] T001 Create project structure per implementation plan (src/app, src/models, src/platform, tests/)
+- [X] T002 Initialize Python project with `pyproject.toml` (dependencies: PySide6, Pillow; dev: pytest, pytest-qt, pytest-cov, ruff, mypy)
+- [X] T003 [P] Configure linting and formatting (ruff) in `pyproject.toml`
+- [X] T004 [P] Configure static typing (mypy) in `pyproject.toml`
+- [X] T005 [P] Configure pytest and coverage (pytest-cov, ≥ 80 %) in `pyproject.toml`
+- [X] T006 [P] Configure CI matrix (Windows/macOS/Linux) in `.github/workflows/ci.yml`
 
 ---
 
@@ -39,14 +39,14 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Create base entities (ImageSource, ConversionOptions, ConversionTask, Batch, BatchReport) in `src/models/`
-- [ ] T008 [P] Unit tests for core engine in `tests/unit/test_converter.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T009 [P] Unit tests for models in `tests/unit/test_models.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T010 [P] Implement format detection (`detect_format`, `supported_formats`) in `src/app/core/formats.py`
-- [ ] T011 [P] Implement conversion engine (`convert`) in `src/app/core/converter.py`
-- [ ] T012 [P] Implement error types (`ConversionError`) in `src/app/core/errors.py`
-- [ ] T013 [P] Implement platform abstraction (notifications, paths) in `src/platform/`
-- [ ] T014 Configure structured logging in `src/app/core/logging.py`
+- [X] T007 Create base entities (ImageSource, ConversionOptions, ConversionTask, Batch, BatchReport) in `src/models/`
+- [X] T008 [P] Unit tests for core engine in `tests/unit/test_converter.py` (TDD: write FIRST, ensure FAIL)
+- [X] T009 [P] Unit tests for models in `tests/unit/test_models.py` (TDD: write FIRST, ensure FAIL)
+- [X] T010 [P] Implement format detection (`detect_format`, `supported_formats`) in `src/app/core/formats.py`
+- [X] T011 [P] Implement conversion engine (`convert`) in `src/app/core/converter.py`
+- [X] T012 [P] Implement error types (`ConversionError`) in `src/app/core/errors.py`
+- [X] T013 [P] Implement platform abstraction (notifications, paths) in `src/platform/`
+- [X] T014 Configure structured logging in `src/app/core/logging.py`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -62,18 +62,18 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T015 [P] [US1] Integration test for single image conversion in `tests/integration/test_single_conversion.py`
-- [ ] T016 [P] [US1] Contract test for `convert()` in `tests/contract/test_converter_contract.py`
+- [X] T015 [P] [US1] Integration test for single image conversion in `tests/integration/test_single_conversion.py`
+- [X] T016 [P] [US1] Contract test for `convert()` in `tests/contract/test_converter_contract.py`
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Implement collision policy (overwrite/rename/ask) in `src/app/core/collision.py`
-- [ ] T018 [US1] Implement metadata preservation (EXIF, orientation) in `src/app/core/metadata.py`
-- [ ] T019 [US1] Implement single conversion service in `src/app/services/conversion_service.py`
-- [ ] T020 [US1] Implement main window with single conversion flow in `src/app/ui/main_window.py`
-- [ ] T021 [US1] Implement file selection and format picker in `src/app/ui/widgets/`
-- [ ] T022 [US1] Add validation and error handling for single conversion
-- [ ] T023 [US1] Add logging for single conversion operations
+- [X] T017 [US1] Implement collision policy (overwrite/rename/ask) in `src/app/core/collision.py`
+- [X] T018 [US1] Implement metadata preservation (EXIF, orientation) in `src/app/core/metadata.py`
+- [X] T019 [US1] Implement single conversion service in `src/app/services/conversion_service.py`
+- [X] T020 [US1] Implement main window with single conversion flow in `src/app/ui/main_window.py`
+- [X] T021 [US1] Implement file selection and format picker in `src/app/ui/widgets/`
+- [X] T022 [US1] Add validation and error handling for single conversion
+- [X] T023 [US1] Add logging for single conversion operations
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -87,16 +87,16 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T024 [P] [US2] Integration test for batch conversion in `tests/integration/test_batch_conversion.py`
-- [ ] T025 [P] [US2] Contract test for `BatchService.run()` in `tests/contract/test_batch_service_contract.py`
+- [X] T024 [P] [US2] Integration test for batch conversion in `tests/integration/test_batch_conversion.py`
+- [X] T025 [P] [US2] Contract test for `BatchService.run()` in `tests/contract/test_batch_service_contract.py`
 
 ### Implementation for User Story 2
 
-- [ ] T026 [US2] Implement batch orchestration service in `src/app/services/batch_service.py`
-- [ ] T027 [US2] Implement batch report generation in `src/app/services/report.py`
-- [ ] T028 [US2] Implement batch UI (file list, progress) in `src/app/ui/widgets/batch_panel.py`
-- [ ] T029 [US2] Implement folder scanning and recursive file collection in `src/app/services/file_collector.py`
-- [ ] T030 [US2] Integrate batch flow into main window in `src/app/ui/main_window.py`
+- [X] T026 [US2] Implement batch orchestration service in `src/app/services/batch_service.py`
+- [X] T027 [US2] Implement batch report generation in `src/app/services/report.py`
+- [X] T028 [US2] Implement batch UI (file list, progress) in `src/app/ui/widgets/batch_panel.py`
+- [X] T029 [US2] Implement folder scanning and recursive file collection in `src/app/services/file_collector.py`
+- [X] T030 [US2] Integrate batch flow into main window in `src/app/ui/main_window.py`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -110,16 +110,16 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T031 [P] [US3] Integration test for background processing in `tests/integration/test_background.py`
-- [ ] T032 [P] [US3] Unit test for notification abstraction in `tests/unit/test_notifications.py`
+- [X] T031 [P] [US3] Integration test for background processing in `tests/integration/test_background.py`
+- [X] T032 [P] [US3] Unit test for notification abstraction in `tests/unit/test_notifications.py`
 
 ### Implementation for User Story 3
 
-- [ ] T033 [US3] Implement background worker (QThreadPool + signals) in `src/app/services/worker.py`
-- [ ] T034 [US3] Implement cancellation support in `src/app/services/worker.py`
-- [ ] T035 [US3] Implement native notifications in `src/platform/notifications.py`
-- [ ] T036 [US3] Wire background processing + notifications into batch service
-- [ ] T037 [US3] Add progress signal handling in UI in `src/app/ui/main_window.py`
+- [X] T033 [US3] Implement background worker (QThreadPool + signals) in `src/app/services/worker.py`
+- [X] T034 [US3] Implement cancellation support in `src/app/services/worker.py`
+- [X] T035 [US3] Implement native notifications in `src/platform/notifications.py`
+- [X] T036 [US3] Wire background processing + notifications into batch service
+- [X] T037 [US3] Add progress signal handling in UI in `src/app/ui/main_window.py`
 
 **Checkpoint**: At this point, User Stories 1, 2 AND 3 should all work independently
 
@@ -133,15 +133,15 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T038 [P] [US4] Integration test for resize/quality options in `tests/integration/test_options.py`
+- [X] T038 [P] [US4] Integration test for resize/quality options in `tests/integration/test_options.py`
 
 ### Implementation for User Story 4
 
-- [ ] T039 [US4] Implement resize logic in `src/app/core/resize.py`
-- [ ] T040 [US4] Implement quality handling in `src/app/core/converter.py`
-- [ ] T041 [US4] Implement preview pane widget in `src/app/ui/widgets/preview_pane.py`
-- [ ] T042 [US4] Implement options panel (quality, dimensions) in `src/app/ui/widgets/options_panel.py`
-- [ ] T043 [US4] Wire options into conversion service
+- [X] T039 [US4] Implement resize logic in `src/app/core/resize.py`
+- [X] T040 [US4] Implement quality handling in `src/app/core/converter.py`
+- [X] T041 [US4] Implement preview pane widget in `src/app/ui/widgets/preview_pane.py`
+- [X] T042 [US4] Implement options panel (quality, dimensions) in `src/app/ui/widgets/options_panel.py`
+- [X] T043 [US4] Wire options into conversion service
 
 **Checkpoint**: At this point, User Stories 1-4 should all work independently
 
@@ -155,13 +155,13 @@
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T044 [P] [US5] Widget test for drop zone in `tests/unit/test_drop_zone.py`
+- [X] T044 [P] [US5] Widget test for drop zone in `tests/unit/test_drop_zone.py`
 
 ### Implementation for User Story 5
 
-- [ ] T045 [US5] Implement drop zone widget in `src/app/ui/widgets/drop_zone.py`
-- [ ] T046 [US5] Implement system context menu integration in `src/platform/context_menu.py`
-- [ ] T047 [US5] Wire drop zone and context menu into main window
+- [X] T045 [US5] Implement drop zone widget in `src/app/ui/widgets/drop_zone.py`
+- [X] T046 [US5] Implement system context menu integration in `src/platform/context_menu.py`
+- [X] T047 [US5] Wire drop zone and context menu into main window
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -171,15 +171,15 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T048 [P] Implement theme system (light/dark QSS) in `src/app/ui/theme/`
-- [ ] T049 [P] Implement custom widgets styling and icons in `src/app/ui/resources/`
-- [ ] T050 [P] Implement animations (QPropertyAnimation) in `src/app/ui/animations.py`
-- [ ] T051 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
-- [ ] T052 Performance optimization (lazy I/O, memory budget) across all stories
-- [ ] T053 Run quickstart.md validation scenarios end-to-end
-- [ ] T054 Code cleanup and refactoring (ruff, mypy clean)
-- [ ] T055 [P] Implement animated image handling (GIF/WebP: preserve or degrade with warning) in `src/app/core/animation.py`
-- [ ] T056 [P] Add automated performance benchmarks (conversion <5s, batch 100 responsive, startup <3s) in `tests/benchmark/`
+- [X] T048 [P] Implement theme system (light/dark QSS) in `src/app/ui/theme/`
+- [X] T049 [P] Implement custom widgets styling and icons in `src/app/ui/resources/`
+- [X] T050 [P] Implement animations (QPropertyAnimation) in `src/app/ui/animations.py`
+- [X] T051 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
+- [X] T052 Performance optimization (lazy I/O, memory budget) across all stories
+- [X] T053 Run quickstart.md validation scenarios end-to-end
+- [X] T054 Code cleanup and refactoring (ruff, mypy clean)
+- [X] T055 [P] Implement animated image handling (GIF/WebP: preserve or degrade with warning) in `src/app/core/animation.py`
+- [X] T056 [P] Add automated performance benchmarks (conversion <5s, batch 100 responsive, startup <3s) in `tests/benchmark/`
 
 ---
 
