@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (
 from app.services import batch_service, settings_service
 from app.ui import animations
 from app.ui.resources import icons
+from app.ui.theme import tokens
 from app.ui.tray import TrayIcon
 from app.ui.widgets.batch_panel import BatchPanel
 from app.ui.widgets.drop_zone import DropZone
@@ -82,6 +83,13 @@ class MainWindow(QMainWindow):
         central = QWidget()
         self.setCentralWidget(central)
         root = QVBoxLayout(central)
+        root.setSpacing(tokens.SPACING_MEDIUM)
+        root.setContentsMargins(
+            tokens.SPACING_MEDIUM,
+            tokens.SPACING_MEDIUM,
+            tokens.SPACING_MEDIUM,
+            tokens.SPACING_MEDIUM,
+        )
 
         # Zone de dépôt
         self._drop_zone = DropZone()
@@ -105,10 +113,17 @@ class MainWindow(QMainWindow):
         self._splitter.setStretchFactor(2, 2)
         self._splitter.setStretchFactor(3, 2)
         self._splitter.setSizes([300, 200, 200, 200])
+        # Bornes des panneaux (FR-001/SC-001).
+        for panel in (self._preview, self._options, self._batch_panel, self._history_panel):
+            panel.setMinimumWidth(tokens.PANEL_MIN_WIDTH)
+            panel.setMaximumWidth(tokens.PANEL_MAX_WIDTH)
         root.addWidget(self._splitter)
 
-        # Boutons
+        # Boutons — alignés et espacés uniformément.
         buttons = QHBoxLayout()
+        buttons.setSpacing(tokens.SPACING_MEDIUM)
+        margins = (tokens.SPACING_SMALL,) * 4
+        buttons.setContentsMargins(*margins)
         self._add_btn = QPushButton("Ajouter des images")
         self._add_btn.setIcon(icons.add_icon())
         self._add_btn.clicked.connect(self._pick_files)

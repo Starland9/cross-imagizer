@@ -24,7 +24,7 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create design tokens module (spacings, sizes, fonts, colors) in `src/app/ui/theme/tokens.py`
+- [X] T001 Create design tokens module (spacings, sizes, fonts, colors) in `src/app/ui/theme/tokens.py`
 
 ---
 
@@ -34,8 +34,8 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 Unit tests for design tokens in `tests/unit/test_tokens.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T003 Implement design tokens (SPACING_*, PANEL_MIN/MAX_WIDTH, FONT_*, COLOR_*) in `src/app/ui/theme/tokens.py`
+- [X] T002 Unit tests for design tokens in `tests/unit/test_tokens.py` (TDD: write FIRST, ensure FAIL)
+- [X] T003 Implement design tokens (SPACING_*, PANEL_MIN/MAX_WIDTH, FONT_*, COLOR_*) in `src/app/ui/theme/tokens.py`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -49,12 +49,12 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T004 [P] [US1] Widget test for panel size bounds in `tests/unit/test_panel_sizes.py`
+- [X] T004 [P] [US1] Widget test for panel size bounds in `tests/unit/test_panel_sizes.py`
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Apply setMinimumWidth/setMaximumWidth and QSizePolicy to panels in `src/app/ui/main_window.py`
-- [ ] T006 [US1] Apply size policies to widgets in `src/app/ui/widgets/`
+- [X] T005 [US1] Apply setMinimumWidth/setMaximumWidth and QSizePolicy to panels in `src/app/ui/main_window.py`
+- [X] T006 [US1] Apply size policies to widgets in `src/app/ui/widgets/`
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -68,11 +68,11 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T007 [P] [US2] Widget test for uniform spacing in `tests/unit/test_spacing.py`
+- [X] T007 [P] [US2] Widget test for uniform spacing in `tests/unit/test_spacing.py`
 
 ### Implementation for User Story 2
 
-- [ ] T008 [US2] Apply uniform margins/padding via QSS tokens in `src/app/ui/theme/theme.py`
+- [X] T008 [US2] Apply uniform margins/padding via QSS tokens in `src/app/ui/theme/theme.py`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -86,12 +86,12 @@
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T009 [P] [US5] Widget test for widget alignment in `tests/unit/test_alignment.py`
+- [X] T009 [P] [US5] Widget test for widget alignment in `tests/unit/test_alignment.py`
 
 ### Implementation for User Story 5
 
-- [ ] T010 [US5] Refactor forms to QFormLayout for label/field alignment in `src/app/ui/widgets/options_panel.py`
-- [ ] T011 [US5] Align button rows and groups in `src/app/ui/main_window.py`
+- [X] T010 [US5] Refactor forms to QFormLayout for label/field alignment in `src/app/ui/widgets/options_panel.py`
+- [X] T011 [US5] Align button rows and groups in `src/app/ui/main_window.py`
 
 **Checkpoint**: At this point, User Stories 1, 2 AND 5 should all work independently
 
@@ -105,12 +105,12 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T012 [P] [US3] Widget test for typography hierarchy in `tests/unit/test_typography.py`
+- [X] T012 [P] [US3] Widget test for typography hierarchy in `tests/unit/test_typography.py`
 
 ### Implementation for User Story 3
 
-- [ ] T013 [US3] Apply font-size/font-weight hierarchy via QSS tokens in `src/app/ui/theme/theme.py`
-- [ ] T014 [US3] Add titles to panels in `src/app/ui/widgets/`
+- [X] T013 [US3] Apply font-size/font-weight hierarchy via QSS tokens in `src/app/ui/theme/theme.py`
+- [X] T014 [US3] Add titles to panels in `src/app/ui/widgets/`
 
 **Checkpoint**: At this point, User Stories 1, 2, 5 AND 3 should all work independently
 
@@ -124,12 +124,12 @@
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T015 [P] [US4] Widget test for interactive states in `tests/unit/test_widget_states.py`
+- [X] T015 [P] [US4] Widget test for interactive states in `tests/unit/test_widget_states.py`
 
 ### Implementation for User Story 4
 
-- [ ] T016 [US4] Add :hover/:pressed/:disabled pseudo-states to QSS in `src/app/ui/theme/theme.py`
-- [ ] T017 [US4] Ensure states are consistent in both light and dark themes in `src/app/ui/theme/theme.py`
+- [X] T016 [US4] Add :hover/:pressed/:disabled pseudo-states to QSS in `src/app/ui/theme/theme.py`
+- [X] T017 [US4] Ensure states are consistent in both light and dark themes in `src/app/ui/theme/theme.py`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -139,10 +139,10 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T018 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
-- [ ] T019 Run quickstart.md validation scenarios end-to-end
-- [ ] T020 Code cleanup and refactoring (ruff, mypy clean)
-- [ ] T021 [P] Add UI non-blocking test during interactions in `tests/unit/test_widget_states.py` per SC-004
+- [X] T018 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
+- [X] T019 Run quickstart.md validation scenarios end-to-end
+- [X] T020 Code cleanup and refactoring (ruff, mypy clean)
+- [X] T021 [P] Add UI non-blocking test during interactions in `tests/unit/test_widget_states.py` per SC-004
 
 ---
 

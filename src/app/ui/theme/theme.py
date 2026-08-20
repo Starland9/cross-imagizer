@@ -5,159 +5,209 @@ from __future__ import annotations
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication
 
-_LIGHT_QSS = """
-QWidget {
-    background-color: #fafafa;
-    color: #1f2937;
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    font-size: 13px;
-}
-QMainWindow, QDialog {
-    background-color: #fafafa;
-}
-QPushButton {
-    background-color: #2563eb;
+from app.ui.theme import tokens
+
+
+def _light_qss() -> str:
+    t = tokens
+    return f"""
+QWidget {{
+    background-color: {t.COLOR_LIGHT_BG};
+    color: {t.COLOR_LIGHT_TEXT};
+    font-family: {t.FONT_FAMILY};
+    font-size: {t.FONT_SIZE_BODY}px;
+}}
+QMainWindow, QDialog {{
+    background-color: {t.COLOR_LIGHT_BG};
+}}
+QGroupBox {{
+    border: 1px solid {t.COLOR_LIGHT_BORDER};
+    border-radius: 8px;
+    margin: {t.SPACING_MEDIUM}px;
+    margin-top: {t.SPACING_LARGE}px;
+    padding: {t.SPACING_MEDIUM}px;
+    padding-top: {t.SPACING_LARGE}px;
+    font-size: {t.FONT_SIZE_TITLE}px;
+    font-weight: {t.FONT_WEIGHT_TITLE};
+}}
+QGroupBox::title {{
+    subcontrol-origin: margin;
+    left: {t.SPACING_MEDIUM}px;
+    padding: 0 {t.SPACING_SMALL}px;
+    color: {t.COLOR_LIGHT_TEXT_MUTED};
+    font-weight: {t.FONT_WEIGHT_TITLE};
+}}
+QPushButton {{
+    background-color: {t.COLOR_LIGHT_PRIMARY};
     color: #ffffff;
     border: none;
     border-radius: 6px;
-    padding: 8px 16px;
-    font-weight: 600;
-}
-QPushButton:hover {
-    background-color: #1d4ed8;
-}
-QPushButton:pressed {
-    background-color: #1e40af;
-}
-QPushButton:disabled {
-    background-color: #cbd5e1;
-    color: #64748b;
-}
-QPushButton#secondary {
-    background-color: #e2e8f0;
-    color: #1f2937;
-}
-QPushButton#secondary:hover {
-    background-color: #cbd5e1;
-}
-QLineEdit, QComboBox, QSpinBox {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
+    padding: {t.SPACING_MEDIUM}px {t.SPACING_LARGE}px;
+    font-weight: {t.FONT_WEIGHT_BUTTON};
+    min-height: 24px;
+}}
+QPushButton:hover {{
+    background-color: {t.COLOR_LIGHT_PRIMARY_HOVER};
+}}
+QPushButton:pressed {{
+    background-color: {t.COLOR_LIGHT_PRIMARY_PRESSED};
+}}
+QPushButton:disabled {{
+    background-color: {t.COLOR_LIGHT_DISABLED_BG};
+    color: {t.COLOR_LIGHT_DISABLED_TEXT};
+}}
+QPushButton#secondary {{
+    background-color: {t.COLOR_LIGHT_SECONDARY_BG};
+    color: {t.COLOR_LIGHT_TEXT};
+}}
+QPushButton#secondary:hover {{
+    background-color: {t.COLOR_LIGHT_SECONDARY_HOVER};
+}}
+QPushButton#secondary:pressed {{
+    background-color: {t.COLOR_LIGHT_BORDER};
+}}
+QPushButton#secondary:disabled {{
+    background-color: {t.COLOR_LIGHT_DISABLED_BG};
+    color: {t.COLOR_LIGHT_DISABLED_TEXT};
+}}
+QLineEdit, QComboBox, QSpinBox {{
+    background-color: {t.COLOR_LIGHT_SURFACE};
+    border: 1px solid {t.COLOR_LIGHT_BORDER};
     border-radius: 6px;
-    padding: 6px 8px;
-}
-QComboBox::drop-down {
+    padding: {t.SPACING_SMALL}px {t.SPACING_MEDIUM}px;
+    selection-background-color: {t.COLOR_LIGHT_PRIMARY};
+}}
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {{
+    border: 1px solid {t.COLOR_LIGHT_PRIMARY};
+}}
+QComboBox::drop-down {{
     border: none;
-}
-QProgressBar {
-    background-color: #e2e8f0;
+}}
+QProgressBar {{
+    background-color: {t.COLOR_LIGHT_SECONDARY_BG};
     border: none;
     border-radius: 6px;
     text-align: center;
     height: 18px;
-}
-QProgressBar::chunk {
-    background-color: #2563eb;
+}}
+QProgressBar::chunk {{
+    background-color: {t.COLOR_LIGHT_PRIMARY};
     border-radius: 6px;
-}
-QListWidget {
-    background-color: #ffffff;
-    border: 1px solid #d1d5db;
+}}
+QListWidget {{
+    background-color: {t.COLOR_LIGHT_SURFACE};
+    border: 1px solid {t.COLOR_LIGHT_BORDER};
     border-radius: 6px;
-}
-QGroupBox {
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    margin-top: 12px;
-    padding-top: 8px;
-}
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 4px;
-    color: #4b5563;
-}
+    padding: {t.SPACING_SMALL}px;
+}}
+QLabel {{
+    font-weight: {t.FONT_WEIGHT_LABEL};
+}}
 """
 
-_DARK_QSS = """
-QWidget {
-    background-color: #111827;
-    color: #e5e7eb;
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    font-size: 13px;
-}
-QMainWindow, QDialog {
-    background-color: #111827;
-}
-QPushButton {
-    background-color: #3b82f6;
+
+def _dark_qss() -> str:
+    t = tokens
+    return f"""
+QWidget {{
+    background-color: {t.COLOR_DARK_BG};
+    color: {t.COLOR_DARK_TEXT};
+    font-family: {t.FONT_FAMILY};
+    font-size: {t.FONT_SIZE_BODY}px;
+}}
+QMainWindow, QDialog {{
+    background-color: {t.COLOR_DARK_BG};
+}}
+QGroupBox {{
+    border: 1px solid {t.COLOR_DARK_BORDER};
+    border-radius: 8px;
+    margin: {t.SPACING_MEDIUM}px;
+    margin-top: {t.SPACING_LARGE}px;
+    padding: {t.SPACING_MEDIUM}px;
+    padding-top: {t.SPACING_LARGE}px;
+    font-size: {t.FONT_SIZE_TITLE}px;
+    font-weight: {t.FONT_WEIGHT_TITLE};
+}}
+QGroupBox::title {{
+    subcontrol-origin: margin;
+    left: {t.SPACING_MEDIUM}px;
+    padding: 0 {t.SPACING_SMALL}px;
+    color: {t.COLOR_DARK_TEXT_MUTED};
+    font-weight: {t.FONT_WEIGHT_TITLE};
+}}
+QPushButton {{
+    background-color: {t.COLOR_DARK_PRIMARY};
     color: #ffffff;
     border: none;
     border-radius: 6px;
-    padding: 8px 16px;
-    font-weight: 600;
-}
-QPushButton:hover {
-    background-color: #2563eb;
-}
-QPushButton:pressed {
-    background-color: #1d4ed8;
-}
-QPushButton:disabled {
-    background-color: #374151;
-    color: #6b7280;
-}
-QPushButton#secondary {
-    background-color: #1f2937;
-    color: #e5e7eb;
-}
-QPushButton#secondary:hover {
-    background-color: #374151;
-}
-QLineEdit, QComboBox, QSpinBox {
-    background-color: #1f2937;
-    border: 1px solid #374151;
+    padding: {t.SPACING_MEDIUM}px {t.SPACING_LARGE}px;
+    font-weight: {t.FONT_WEIGHT_BUTTON};
+    min-height: 24px;
+}}
+QPushButton:hover {{
+    background-color: {t.COLOR_DARK_PRIMARY_HOVER};
+}}
+QPushButton:pressed {{
+    background-color: {t.COLOR_DARK_PRIMARY_PRESSED};
+}}
+QPushButton:disabled {{
+    background-color: {t.COLOR_DARK_DISABLED_BG};
+    color: {t.COLOR_DARK_DISABLED_TEXT};
+}}
+QPushButton#secondary {{
+    background-color: {t.COLOR_DARK_SECONDARY_BG};
+    color: {t.COLOR_DARK_TEXT};
+}}
+QPushButton#secondary:hover {{
+    background-color: {t.COLOR_DARK_SECONDARY_HOVER};
+}}
+QPushButton#secondary:pressed {{
+    background-color: {t.COLOR_DARK_BORDER};
+}}
+QPushButton#secondary:disabled {{
+    background-color: {t.COLOR_DARK_DISABLED_BG};
+    color: {t.COLOR_DARK_DISABLED_TEXT};
+}}
+QLineEdit, QComboBox, QSpinBox {{
+    background-color: {t.COLOR_DARK_SURFACE};
+    border: 1px solid {t.COLOR_DARK_BORDER};
     border-radius: 6px;
-    padding: 6px 8px;
-    color: #e5e7eb;
-}
-QComboBox::drop-down {
+    padding: {t.SPACING_SMALL}px {t.SPACING_MEDIUM}px;
+    color: {t.COLOR_DARK_TEXT};
+    selection-background-color: {t.COLOR_DARK_PRIMARY};
+}}
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {{
+    border: 1px solid {t.COLOR_DARK_PRIMARY};
+}}
+QComboBox::drop-down {{
     border: none;
-}
-QProgressBar {
-    background-color: #1f2937;
+}}
+QProgressBar {{
+    background-color: {t.COLOR_DARK_SURFACE};
     border: none;
     border-radius: 6px;
     text-align: center;
     height: 18px;
-}
-QProgressBar::chunk {
-    background-color: #3b82f6;
+}}
+QProgressBar::chunk {{
+    background-color: {t.COLOR_DARK_PRIMARY};
     border-radius: 6px;
-}
-QListWidget {
-    background-color: #1f2937;
-    border: 1px solid #374151;
+}}
+QListWidget {{
+    background-color: {t.COLOR_DARK_SURFACE};
+    border: 1px solid {t.COLOR_DARK_BORDER};
     border-radius: 6px;
-}
-QGroupBox {
-    border: 1px solid #374151;
-    border-radius: 8px;
-    margin-top: 12px;
-    padding-top: 8px;
-}
-QGroupBox::title {
-    subcontrol-origin: margin;
-    left: 10px;
-    padding: 0 4px;
-    color: #9ca3af;
-}
+    padding: {t.SPACING_SMALL}px;
+}}
+QLabel {{
+    font-weight: {t.FONT_WEIGHT_LABEL};
+}}
 """
 
 
 def apply_theme(app: QApplication, dark: bool) -> None:
     """Applique le thème clair ou sombre à l'application."""
-    app.setStyleSheet(_DARK_QSS if dark else _LIGHT_QSS)
+    app.setStyleSheet(_dark_qss() if dark else _light_qss())
     palette = QPalette()
     if dark:
         palette.setColor(QPalette.ColorRole.Window, QColor("#111827"))
