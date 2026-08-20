@@ -23,6 +23,9 @@ dev = [
     "ruff>=0.4",
     "mypy>=1.10",
 ]
+build = [
+    "pyinstaller>=6.0",
+]
 
 [project.scripts]
 cross-imagizer = "app.main:main"
