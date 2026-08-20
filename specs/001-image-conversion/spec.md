@@ -147,8 +147,9 @@ et en vérifiant qu'ils sont pris en compte.
 ### Functional Requirements
 
 - **FR-001**: Le système MUST convertir une image d'un format source vers un
-  format cible parmi un large éventail de formats pris en charge (JPEG, PNG,
-  WebP, GIF, BMP, TIFF, AVIF, HEIC, SVG, ICO, etc.).
+  format cible parmi les formats pris en charge en v1 : JPEG, PNG, WebP, GIF,
+  BMP, TIFF, ICO, PPM, PGM, PBM. Les formats AVIF et HEIC sont des extensions
+  optionnelles (codecs supplémentaires).
 - **FR-002**: Le système MUST détecter et signaler clairement les images
   corrompues ou non prises en charge sans interrompre le reste du traitement.
 - **FR-003**: Le système MUST permettre la conversion par lot de plusieurs
@@ -175,6 +176,9 @@ et en vérifiant qu'ils sont pris en compte.
   l'interface.
 - **FR-015**: Le système MUST fournir un rapport récapitulatif après un
   traitement par lot (succès, échecs, raisons des échecs).
+- **FR-016**: Le système MUST offrir une interface sobre et authentique avec un
+  thème clair et un thème sombre, des animations fluides, des widgets
+  personnalisés et des icônes dédiées.
 
 ### Key Entities
 
