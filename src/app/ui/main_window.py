@@ -16,11 +16,13 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from app.services import batch_service
+from app.services import batch_service, settings_service
 from app.ui import animations
 from app.ui.resources import icons
+from app.ui.tray import TrayIcon
 from app.ui.widgets.batch_panel import BatchPanel
 from app.ui.widgets.drop_zone import DropZone
+from app.ui.widgets.history_panel import HistoryPanel
 from app.ui.widgets.options_panel import OptionsPanel
 from app.ui.widgets.preview_pane import PreviewPane
 from models import BatchReport
@@ -37,6 +39,8 @@ class MainWindow(QMainWindow):
 
         self._confirm_event = threading.Event()
         self._confirm_answer = False
+        self._tray: TrayIcon | None = None
+        self._quitting = False
 
         self._batch_service = batch_service.BatchService()
         self._batch_service.progress.connect(self._on_progress)
@@ -44,6 +48,34 @@ class MainWindow(QMainWindow):
         self._batch_service.cancelled.connect(self._on_cancelled)
 
         self._build_ui()
+
+    def enable_tray(self, tray: TrayIcon) -> None:
+        """Active le comportement de barre de tâche."""
+        self._tray = tray
+
+    def show_and_convert(self) -> None:
+        """Ouvre la fenêtre et déclenche la sélection de fichiers."""
+        self.show()
+        self.raise_()
+        self._pick_files()
+
+    def quit_app(self) -> None:
+        """Quitte proprement l'application (arrête les workers)."""
+        self._quitting = True
+        self._batch_service.cancel()
+        from PySide6.QtWidgets import QApplication
+
+        app = QApplication.instance()
+        if isinstance(app, QApplication):
+            app.quit()
+
+    def closeEvent(self, event: object) -> None:  # noqa: N802
+        """Masque la fenêtre au lieu de quitter si le tray est actif."""
+        if self._tray is not None and not self._quitting:
+            event.ignore()  # type: ignore[attr-defined]
+            self.hide()
+        else:
+            event.accept()  # type: ignore[attr-defined]
 
     def _build_ui(self) -> None:
         central = QWidget()
@@ -65,6 +97,9 @@ class MainWindow(QMainWindow):
 
         self._batch_panel = BatchPanel()
         body.addWidget(self._batch_panel, 1)
+
+        self._history_panel = HistoryPanel()
+        body.addWidget(self._history_panel, 1)
         root.addLayout(body)
 
         # Boutons
@@ -91,12 +126,29 @@ class MainWindow(QMainWindow):
         self._theme_btn.setIcon(icons.theme_icon())
         self._theme_btn.clicked.connect(self._toggle_theme)
         buttons.addWidget(self._theme_btn)
+
+        self._output_btn = QPushButton("Dossier de sortie…")
+        self._output_btn.setObjectName("secondary")
+        self._output_btn.clicked.connect(self._pick_output_dir)
+        buttons.addWidget(self._output_btn)
         root.addLayout(buttons)
 
         self._dark = False
+        self._output_dir: Path | None = settings_service.get_output_directory()
 
         # Animation d'apparition de la fenêtre.
         animations.fade_in(self)
+
+    def _pick_output_dir(self) -> None:
+        """Ouvre un sélecteur de dossier de sortie et le persiste."""
+        directory = QFileDialog.getExistingDirectory(self, "Choisir un dossier de sortie")
+        if not directory:
+            return
+        try:
+            settings_service.set_output_directory(Path(directory))
+            self._output_dir = Path(directory)
+        except ValueError as exc:
+            QMessageBox.warning(self, "Dossier invalide", str(exc))
 
     def _pick_files(self) -> None:
         paths, _ = QFileDialog.getOpenFileNames(self, "Sélectionner des images")
@@ -115,7 +167,9 @@ class MainWindow(QMainWindow):
             return
         options = self._options.options()
         batch = self._batch_service.create_batch(files, options)
-        self._batch_service.run(batch, options, confirm=self._confirm_overwrite)
+        self._batch_service.run(
+            batch, options, confirm=self._confirm_overwrite, output_dir=self._output_dir
+        )
         self._convert_btn.setEnabled(False)
         self._cancel_btn.setEnabled(True)
 
@@ -155,6 +209,7 @@ class MainWindow(QMainWindow):
     def _on_finished(self, report: BatchReport) -> None:
         self._convert_btn.setEnabled(True)
         self._cancel_btn.setEnabled(False)
+        self._history_panel.refresh()
         notifications.notify(
             "Conversion terminée",
             f"{report.succeeded} réussie(s), {report.failed} échec(s)",

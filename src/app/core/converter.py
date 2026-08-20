@@ -21,6 +21,7 @@ def convert(
     source: Path,
     options: ConversionOptions,
     confirm: Callable[[Path], bool] | None = None,
+    output_dir: Path | None = None,
 ) -> Path:
     """Convertit une image source vers le format cible.
 
@@ -28,6 +29,7 @@ def convert(
         source: Chemin du fichier source.
         options: Options de conversion.
         confirm: Callback de confirmation pour la politique de collision ``ASK``.
+        output_dir: Dossier de sortie (défaut : à côté de la source).
 
     Returns:
         Le chemin du fichier de sortie produit.
@@ -44,7 +46,7 @@ def convert(
         raise UnreadableImageError(f"Fichier source introuvable : {source}")
 
     output_path = collision.resolve_output_path(
-        source, target_format, None, options.collision_policy, confirm
+        source, target_format, output_dir, options.collision_policy, confirm
     )
 
     # Gestion des images animées.

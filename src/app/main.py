@@ -10,6 +10,7 @@ from app.core.logging import setup_logging
 from app.ui.main_window import MainWindow
 from app.ui.resources import icons
 from app.ui.theme.theme import apply_theme
+from app.ui.tray import TrayIcon
 from platform_utils import context_menu
 
 
@@ -23,6 +24,16 @@ def main() -> int:
     apply_theme(app, dark=False)
 
     window = MainWindow()
+
+    tray = TrayIcon(
+        on_open=window.show,
+        on_convert=window.show_and_convert,
+        on_quit=window.quit_app,
+    )
+    if tray.is_available():
+        tray.show()
+        window.enable_tray(tray)
+
     window.show()
     return app.exec()
 

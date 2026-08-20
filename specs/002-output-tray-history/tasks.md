@@ -24,9 +24,9 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create `HistoryEntry` model in `src/models/history.py`
-- [ ] T002 [P] Create `settings_service.py` skeleton in `src/app/services/settings_service.py`
-- [ ] T003 [P] Create `history_service.py` skeleton in `src/app/services/history_service.py`
+- [X] T001 Create `HistoryEntry` model in `src/models/history.py`
+- [X] T002 [P] Create `settings_service.py` skeleton in `src/app/services/settings_service.py`
+- [X] T003 [P] Create `history_service.py` skeleton in `src/app/services/history_service.py`
 
 ---
 
@@ -36,12 +36,12 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Unit tests for `HistoryEntry` model in `tests/unit/test_history_model.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T005 [P] Unit tests for `settings_service` in `tests/unit/test_settings_service.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T006 [P] Unit tests for `history_service` in `tests/unit/test_history_service.py` (TDD: write FIRST, ensure FAIL)
-- [ ] T007 Implement `HistoryEntry` model in `src/models/history.py`
-- [ ] T008 [P] Implement `settings_service` (get/set output directory via QSettings) in `src/app/services/settings_service.py`
-- [ ] T009 [P] Implement `history_service` (record/list/clear, 500-entry cap) in `src/app/services/history_service.py`
+- [X] T004 [P] Unit tests for `HistoryEntry` model in `tests/unit/test_history_model.py` (TDD: write FIRST, ensure FAIL)
+- [X] T005 [P] Unit tests for `settings_service` in `tests/unit/test_settings_service.py` (TDD: write FIRST, ensure FAIL)
+- [X] T006 [P] Unit tests for `history_service` in `tests/unit/test_history_service.py` (TDD: write FIRST, ensure FAIL)
+- [X] T007 Implement `HistoryEntry` model in `src/models/history.py`
+- [X] T008 [P] Implement `settings_service` (get/set output directory via QSettings) in `src/app/services/settings_service.py`
+- [X] T009 [P] Implement `history_service` (record/list/clear, 500-entry cap) in `src/app/services/history_service.py`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -57,14 +57,14 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T010 [P] [US1] Integration test for output directory conversion in `tests/integration/test_output_directory.py`
+- [X] T010 [P] [US1] Integration test for output directory conversion in `tests/integration/test_output_directory.py`
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Wire `output_dir` from settings into `conversion_service.convert_single` in `src/app/services/conversion_service.py`
-- [ ] T012 [US1] Wire `output_dir` from settings into `BatchService.run` in `src/app/services/batch_service.py`
-- [ ] T013 [US1] Add output directory picker UI in `src/app/ui/main_window.py`
-- [ ] T014 [US1] Add error handling for unwritable output directory
+- [X] T011 [US1] Wire `output_dir` from settings into `conversion_service.convert_single` in `src/app/services/conversion_service.py`
+- [X] T012 [US1] Wire `output_dir` from settings into `BatchService.run` in `src/app/services/batch_service.py`
+- [X] T013 [US1] Add output directory picker UI in `src/app/ui/main_window.py`
+- [X] T014 [US1] Add error handling for unwritable output directory
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -78,14 +78,14 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T015 [P] [US2] Widget test for tray icon in `tests/unit/test_tray.py`
+- [X] T015 [P] [US2] Widget test for tray icon in `tests/unit/test_tray.py`
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] Implement `TrayIcon` (QSystemTrayIcon + QMenu) in `src/app/ui/tray.py`
-- [ ] T017 [US2] Intercept window close to hide instead of quit in `src/app/ui/main_window.py`
-- [ ] T018 [US2] Wire tray actions (open/convert/quit) in `src/app/ui/tray.py`
-- [ ] T019 [US2] Handle graceful quit (stop workers) in `src/app/ui/tray.py`
+- [X] T016 [US2] Implement `TrayIcon` (QSystemTrayIcon + QMenu) in `src/app/ui/tray.py`
+- [X] T017 [US2] Intercept window close to hide instead of quit in `src/app/ui/main_window.py`
+- [X] T018 [US2] Wire tray actions (open/convert/quit) in `src/app/ui/tray.py`
+- [X] T019 [US2] Handle graceful quit (stop workers) in `src/app/ui/tray.py`
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -99,13 +99,13 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T020 [P] [US3] Integration test for history persistence in `tests/integration/test_history.py`
+- [X] T020 [P] [US3] Integration test for history persistence in `tests/integration/test_history.py`
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Record conversions in history from `conversion_service` in `src/app/services/conversion_service.py`
-- [ ] T022 [US3] Implement history panel UI in `src/app/ui/widgets/history_panel.py`
-- [ ] T023 [US3] Wire history panel into main window in `src/app/ui/main_window.py`
+- [X] T021 [US3] Record conversions in history from `conversion_service` in `src/app/services/conversion_service.py`
+- [X] T022 [US3] Implement history panel UI in `src/app/ui/widgets/history_panel.py`
+- [X] T023 [US3] Wire history panel into main window in `src/app/ui/main_window.py`
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -115,11 +115,11 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T024 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
-- [ ] T025 Run quickstart.md validation scenarios end-to-end
-- [ ] T026 Code cleanup and refactoring (ruff, mypy clean)
-- [ ] T027 [P] Add cross-platform validation note for FR-010 (QSystemTrayIcon/QSettings portability) in `tests/unit/test_tray.py`
-- [ ] T028 [P] Add lightweight benchmark for output-directory selection + conversion (<10s) in `tests/benchmark/test_output_directory.py` per SC-001
+- [X] T024 [P] Add remaining unit tests to reach ≥ 80 % coverage in `tests/unit/`
+- [X] T025 Run quickstart.md validation scenarios end-to-end
+- [X] T026 Code cleanup and refactoring (ruff, mypy clean)
+- [X] T027 [P] Add cross-platform validation note for FR-010 (QSystemTrayIcon/QSettings portability) in `tests/unit/test_tray.py`
+- [X] T028 [P] Add lightweight benchmark for output-directory selection + conversion (<10s) in `tests/benchmark/test_output_directory.py` per SC-001
 
 ---
 

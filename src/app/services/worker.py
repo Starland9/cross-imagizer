@@ -31,11 +31,13 @@ class BatchWorker(QRunnable):
         batch: Batch,
         options: ConversionOptions,
         confirm: Callable[[Path], bool] | None = None,
+        output_dir: Path | None = None,
     ) -> None:
         super().__init__()
         self.batch = batch
         self.options = options
         self.confirm = confirm
+        self.output_dir = output_dir
         self.signals = WorkerSignals()
         self._cancelled = False
 
@@ -54,7 +56,9 @@ class BatchWorker(QRunnable):
                 self.signals.cancelled.emit()
                 break
             task.status = TaskStatus.RUNNING
-            result = conversion_service.convert_single(task.source.path, self.options, self.confirm)
+            result = conversion_service.convert_single(
+                task.source.path, self.options, self.confirm, self.output_dir
+            )
             task.status = result.status
             task.output_path = result.output_path
             task.error = result.error

@@ -48,9 +48,10 @@ class BatchService(QObject):
         batch: Batch,
         options: ConversionOptions,
         confirm: Callable[[Path], bool] | None = None,
+        output_dir: Path | None = None,
     ) -> None:
         """Lance l'exécution d'un lot en arrière-plan."""
-        self._worker = BatchWorker(batch, options, confirm=confirm)
+        self._worker = BatchWorker(batch, options, confirm=confirm, output_dir=output_dir)
         self._worker.signals.progress.connect(self.progress)
         self._worker.signals.task_finished.connect(self.task_finished)
         self._worker.signals.finished.connect(self.finished)
